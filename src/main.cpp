@@ -1,15 +1,9 @@
 #include <lvgl.h>
 #include <TFT_eSPI.h>
 #include <ui.h>
+#include "./event_manager/event_manager.h"
 
-#define BUTTON_BOOT 0   // Кнопка BOOT
-#define BUTTON_USER 14  // Пользовательская кнопка
-
-#define BUTTON_UP 17   // Кнопка BOOT
-#define BUTTON_DOWN 21
-#define BUTTON_LEFT 18   // Кнопка BOOT
-#define BUTTON_RIGHT 44
-#define BUTTON_ENTER 16   // Кнопка BOOT
+EventManager eManager = EventManager();
 
 /*Change to your screen resolution*/
 static const uint16_t screenWidth  = 320;
@@ -47,13 +41,7 @@ void setup()
 {
     Serial.begin( 115200 ); /* prepare for possible serial debug */
 
-     pinMode(BUTTON_BOOT, INPUT_PULLUP);
-     pinMode(BUTTON_USER, INPUT_PULLUP);
-      pinMode(BUTTON_DOWN, INPUT_PULLUP);
-       pinMode(BUTTON_UP, INPUT_PULLUP);
-        pinMode(BUTTON_LEFT, INPUT_PULLUP);
-         pinMode(BUTTON_RIGHT, INPUT_PULLUP);
-          pinMode(BUTTON_ENTER, INPUT_PULLUP);
+
 
     String LVGL_Arduino = "Hello Arduino! ";
     LVGL_Arduino += String('V') + lv_version_major() + "." + lv_version_minor() + "." + lv_version_patch();
@@ -84,6 +72,7 @@ void setup()
 
 
     ui_init();
+    eManager.init();
 
     Serial.println( "Setup done" );
 }
@@ -91,42 +80,5 @@ void setup()
 void loop()
 {
     lv_timer_handler(); /* let the GUI do its work */
-    delay(5);
-
-    if (digitalRead(BUTTON_BOOT) == LOW) {
-    Serial.println("Нажата кнопка BOOT (GPIO0)");
-    delay(200); // Простая защита от дребезга
-  }
-
-  if (digitalRead(BUTTON_USER) == LOW) {
-    Serial.println("Нажата кнопка USER (GPIO14)");
-    delay(200); // Простая защита от дребезга
-  }
-
-  if (digitalRead(BUTTON_UP) == LOW) {
-    Serial.println("Нажата кнопка UP");
-    delay(200); // Простая защита от дребезга
-  }
-
-  if (digitalRead(BUTTON_DOWN) == LOW) {
-    Serial.println("Нажата кнопка DOWN");
-   uint16_t active_tab_index = lv_tabview_get_tab_act(ui_TabView1);
-    lv_tabview_set_act(ui_TabView1, active_tab_index < 4 ? active_tab_index + 1 : 0, LV_ANIM_ON);
-    delay(200); // Простая защита от дребезга
-  }
-
-  if (digitalRead(BUTTON_LEFT) == LOW) {
-    Serial.println("Нажата кнопка LEFT");
-    delay(200); // Простая защита от дребезга
-  }
-
-  if (digitalRead(BUTTON_RIGHT) == LOW) {
-    Serial.println("Нажата кнопка RIGHT");
-    delay(200); // Простая защита от дребезга
-  }
-
-  if (digitalRead(BUTTON_ENTER) == LOW) {
-    Serial.println("Нажата кнопка ENTER");
-    delay(200); // Простая защита от дребезга
-  }
+    eManager.tick();
 }

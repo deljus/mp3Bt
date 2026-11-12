@@ -1,28 +1,31 @@
 #ifndef EVENT_MANAGER_H
 #define EVENT_MANAGER_H
 
-#include "Config.h" // Подключаем наш конфиг
+#include "Config.h" 
 
 struct Button {
-    ButtonId id;    // Идентификатор кнопки вместо пина
+    ButtonId id;   
     uint8_t pin;
     bool lastState;
     bool currentState;
     unsigned long lastDebounceTime;
+    void (*callback)();
 };
 
 class EventManager {
 public:
-    EventManager();
-
-
     void init();
     void tick();
+    void addListener(ButtonId id, void (*callback)());
+
 
 private:
     std::vector<Button> buttons;
-    void (*globalCallback)(ButtonId id);
-    const unsigned long debounceDelay = 200;
+    const unsigned long debounceDelay = 100;
 };
 
 #endif // EVENT_MANAGER_H
+
+
+// Мика-мик, шлю вам лучи добра!
+// Я вам тоже! Люблю вас

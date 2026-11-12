@@ -30,7 +30,6 @@ const ButtonConfig CONFIG_BUTTONS[] = {
     {BUTTON_LEFT,   18, "Назад"},
     {BUTTON_RIGHT,  44, "Вправо"},
     {BUTTON_BACK,   14, "Назад"},
-    {BUTTON_BOOT,   0, "Непонятно"}
 };
 
 // Вычисляем количество кнопок автоматически

@@ -2,8 +2,17 @@
 #include <TFT_eSPI.h>
 #include <ui.h>
 #include "./event_manager/event_manager.h"
+#include "./screens/abstract_screen.h"
+#include "./screens/main_screen.h"
+#include "./screens/player_screen.h"
 
-EventManager eManager = EventManager();
+
+EventManager eventManager;
+MainScreen mainScreen;
+PlayerScreen playerScrin;
+
+AbstractScreen *currentScreen = &mainScreen;
+
 
 /*Change to your screen resolution*/
 static const uint16_t screenWidth  = 320;
@@ -37,11 +46,49 @@ void my_disp_flush( lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *colo
     lv_disp_flush_ready( disp );
 }
 
+/*Read the touchpad*/
+void my_touchpad_read( lv_indev_drv_t * indev_driver, lv_indev_data_t * data )
+{
+    uint16_t touchX = 0, touchY = 0;
+
+    bool touched = false;//tft.getTouch( &touchX, &touchY, 600 );
+
+    if( !touched )
+    {
+        data->state = LV_INDEV_STATE_REL;
+    }
+    else
+    {
+        data->state = LV_INDEV_STATE_PR;
+
+        /*Set the coordinates*/
+        data->point.x = touchX;
+        data->point.y = touchY;
+
+        Serial.print( "Data x " );
+        Serial.println( touchX );
+
+        Serial.print( "Data y " );
+        Serial.println( touchY );
+    }
+}
+
+
+void handleGotoPlayerScreen() {
+    playerScrin.initDisplay();
+     lv_scr_load(ui_player);
+     currentScreen = &playerScrin;
+}
+
+void handleGotoMainScreen() {
+    mainScreen.initDisplay();
+    lv_scr_load(ui_main);
+    currentScreen = &mainScreen;
+}
+
 void setup()
 {
     Serial.begin( 115200 ); /* prepare for possible serial debug */
-
-
 
     String LVGL_Arduino = "Hello Arduino! ";
     LVGL_Arduino += String('V') + lv_version_major() + "." + lv_version_minor() + "." + lv_version_patch();
@@ -70,15 +117,43 @@ void setup()
     disp_drv.draw_buf = &draw_buf;
     lv_disp_drv_register( &disp_drv );
 
+    /*Initialize the (dummy) input device driver*/
+    static lv_indev_drv_t indev_drv;
+    lv_indev_drv_init( &indev_drv );
+    indev_drv.type = LV_INDEV_TYPE_POINTER;
+    indev_drv.read_cb = my_touchpad_read;
+    lv_indev_drv_register( &indev_drv );
 
-    ui_init();
-    eManager.init();
+
+    lv_disp_t * dispp = lv_disp_get_default();
+    lv_theme_t * theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
+                                               true, LV_FONT_DEFAULT);
+    lv_disp_set_theme(dispp, theme);
+    
+    currentScreen->initDisplay();
+
+
+    ui____initial_actions0 = lv_obj_create(NULL);
+    lv_disp_load_scr(ui_main);
 
     Serial.println( "Setup done" );
+
+    eventManager.init();
+
+    eventManager.addListener(BUTTON_DOWN, []() { currentScreen->downKeyPress();});
+    eventManager.addListener(BUTTON_UP, []() { currentScreen->upKeyPress();});
+    eventManager.addListener(BUTTON_LEFT, []() { currentScreen->leftKeyPress();});
+    eventManager.addListener(BUTTON_RIGHT, []() { currentScreen->rightKeyPress();});
+    eventManager.addListener(BUTTON_ENTER, []() { currentScreen->enterKeyPress();});
+    eventManager.addListener(BUTTON_BACK, []() { currentScreen->backKeyPress();});
+
+    mainScreen.addGotoPlayerListener(handleGotoPlayerScreen);
+    playerScrin.addGotoMainListener(handleGotoMainScreen);
 }
 
 void loop()
 {
     lv_timer_handler(); /* let the GUI do its work */
-    eManager.tick();
+    eventManager.tick();
+    delay(5);
 }

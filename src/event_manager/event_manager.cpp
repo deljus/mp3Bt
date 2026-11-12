@@ -1,10 +1,6 @@
 #include "config.h"
 #include "event_manager.h"
 
-EventManager::EventManager() {
-    
-}
-
 void EventManager::init() {
     for(int i = 0; i < BUTTONS_COUNT; i++) {
         pinMode(CONFIG_BUTTONS[i].pin, INPUT_PULLUP); 
@@ -18,7 +14,13 @@ void EventManager::init() {
     }
 }
 
-
+void EventManager::addListener(ButtonId id, void (*callback)()) {
+    for (auto& btn : buttons) {
+        if(btn.id == id) {
+            btn.callback = callback;
+        }
+    }
+}
 
 void EventManager::tick() {
     unsigned long currentTime = millis();
@@ -35,14 +37,7 @@ void EventManager::tick() {
                 btn.currentState = reading;
 
                 if (btn.currentState == LOW) {
-                    //globalCallback(btn.id); // Передаем ID нажатой кнопки
-                   for (uint8_t i = 0; i < BUTTONS_COUNT; i++) {
-                    if (CONFIG_BUTTONS[i].id == btn.id) {
-                        Serial.println(CONFIG_BUTTONS[i].name);
-                        break;
-                    }
-                }
-    
+                    btn.callback();
                 }
             }
         }

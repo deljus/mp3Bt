@@ -29,6 +29,7 @@ extern "C" {
 
 #include "ui_main.h"
 #include "ui_player.h"
+#include "ui_wifiSrc.h"
 
 ///////////////////// VARIABLES ////////////////////
 
@@ -39,9 +40,13 @@ extern lv_obj_t * ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
 LV_IMG_DECLARE(ui_img_music_disk_png);    // assets/music disk.png
-LV_IMG_DECLARE(ui_img_advertising_png);    // assets/advertising.png
 LV_IMG_DECLARE(ui_img_wireless_signal_png);    // assets/wireless signal.png
 LV_IMG_DECLARE(ui_img_connect_png);    // assets/connect.png
+LV_IMG_DECLARE(ui_img_button_begin_png);    // assets/button-begin.png
+LV_IMG_DECLARE(ui_img_button_end_png);    // assets/button-end.png
+LV_IMG_DECLARE(ui_img_button_play_png);    // assets/button-play.png
+LV_IMG_DECLARE(ui_img_button_pause_png);    // assets/button-pause.png
+LV_IMG_DECLARE(ui_img_speaker__1__png);    // assets/speaker (1).png
 
 // UI INIT
 void ui_init(void);

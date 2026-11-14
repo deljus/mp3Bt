@@ -5,11 +5,13 @@
 #include "./screens/abstract_screen.h"
 #include "./screens/main_screen.h"
 #include "./screens/player_screen.h"
+#include "./screens/wifi_screen.h"
 
 
 EventManager eventManager;
 MainScreen mainScreen;
 PlayerScreen playerScrin;
+WiFiScreen wifiScreen;
 
 AbstractScreen *currentScreen = &mainScreen;
 
@@ -76,14 +78,20 @@ void my_touchpad_read( lv_indev_drv_t * indev_driver, lv_indev_data_t * data )
 
 void handleGotoPlayerScreen() {
     playerScrin.initDisplay();
-     lv_scr_load(ui_player);
-     currentScreen = &playerScrin;
+    lv_scr_load(ui_player);
+    currentScreen = &playerScrin;
 }
 
 void handleGotoMainScreen() {
     mainScreen.initDisplay();
     lv_scr_load(ui_main);
     currentScreen = &mainScreen;
+}
+
+void handleGotoWifiListener() {
+    wifiScreen.initDisplay();
+    lv_scr_load(ui_wifiSrc);
+    currentScreen = &wifiScreen;
 }
 
 void setup()
@@ -105,7 +113,11 @@ void setup()
     tft.begin();          /* TFT init */
     tft.setRotation( 3 ); /* Landscape orientation, flipped */
 
-    lv_disp_draw_buf_init( &draw_buf, buf, NULL, screenWidth * screenHeight / 10 );
+    uint32_t bufSize = 170 * 320 / 2; 
+    lv_color_t *buf1 = (lv_color_t *)heap_caps_malloc(bufSize * sizeof(lv_color_t), MALLOC_CAP_DMA | MALLOC_CAP_INTERNAL);
+    lv_color_t *buf2 = (lv_color_t *)heap_caps_malloc(bufSize * sizeof(lv_color_t), MALLOC_CAP_DMA | MALLOC_CAP_INTERNAL);
+
+    lv_disp_draw_buf_init(&draw_buf, buf1, buf2, bufSize);
 
     /*Initialize the display*/
     static lv_disp_drv_t disp_drv;
@@ -148,12 +160,13 @@ void setup()
     eventManager.addListener(BUTTON_BACK, []() { currentScreen->backKeyPress();});
 
     mainScreen.addGotoPlayerListener(handleGotoPlayerScreen);
+    mainScreen.addGotoWifiListener(handleGotoWifiListener);
     playerScrin.addGotoMainListener(handleGotoMainScreen);
+    wifiScreen.addGotoMainListener(handleGotoMainScreen);
 }
 
 void loop()
 {
     lv_timer_handler(); /* let the GUI do its work */
     eventManager.tick();
-    delay(5);
 }

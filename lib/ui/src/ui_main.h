@@ -23,8 +23,6 @@ extern lv_obj_t * ui_meow;
 extern lv_obj_t * ui_TabView1;
 extern lv_obj_t * ui_music;
 extern lv_obj_t * ui_Image1;
-extern lv_obj_t * ui_stream;
-extern lv_obj_t * ui_Image2;
 extern lv_obj_t * ui_wifi;
 extern lv_obj_t * ui_Image4;
 extern lv_obj_t * ui_bt;

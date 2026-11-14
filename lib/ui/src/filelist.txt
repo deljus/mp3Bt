@@ -1,9 +1,14 @@
 ui_main.c
 ui_player.c
+ui_wifiSrc.c
 ui.c
 ui_comp_hook.c
 ui_helpers.c
 ui_img_music_disk_png.c
-ui_img_advertising_png.c
 ui_img_wireless_signal_png.c
 ui_img_connect_png.c
+ui_img_button_begin_png.c
+ui_img_button_end_png.c
+ui_img_button_play_png.c
+ui_img_button_pause_png.c
+ui_img_speaker__1__png.c

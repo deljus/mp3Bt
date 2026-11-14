@@ -23,6 +23,10 @@ void MainScreen::addGotoPlayerListener(void (*cb)()) {
     gotoPlayerCallback = cb;
 }
 
+void MainScreen::addGotoWifiListener(void (*cb)()) {
+    gotoWifiCallback = cb;
+}
+
 void MainScreen::upKeyPress() {
     uint16_t activeTabIndex = lv_tabview_get_tab_act(ui_TabView1);
     lv_tabview_set_act(ui_TabView1, activeTabIndex > 0 ? activeTabIndex - 1 : activeTabIndex, LV_ANIM_OFF);
@@ -42,7 +46,10 @@ void MainScreen::enterKeyPress() {
     case 0:
         gotoPlayerCallback();
         break;  
-    
+    case 1:
+        gotoWifiCallback();
+        break;
+
     default:
         break;
     }

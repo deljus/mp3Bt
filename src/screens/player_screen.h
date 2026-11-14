@@ -1,4 +1,5 @@
 #include "abstract_screen.h"
+#include "ui.h"
 #include <functional>
 
 class PlayerScreen : public AbstractScreen
@@ -22,4 +23,12 @@ public:
     void addGotoMainListener(void (*cb)());
 private:
     CallbackType gotoMainCallback;
+    int deltaVolume = 5;
+    
+    void onIncrementVolume(int32_t volume);
+    void onDecrementVolume(int32_t volume);
+    void onPlay();
+    void onPause();
+    void onNextSound();
+    void onPrevSound();
 };

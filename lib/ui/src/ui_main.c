@@ -15,8 +15,6 @@ lv_obj_t * ui_meow = NULL;
 lv_obj_t * ui_TabView1 = NULL;
 lv_obj_t * ui_music = NULL;
 lv_obj_t * ui_Image1 = NULL;
-lv_obj_t * ui_stream = NULL;
-lv_obj_t * ui_Image2 = NULL;
 lv_obj_t * ui_wifi = NULL;
 lv_obj_t * ui_Image4 = NULL;
 lv_obj_t * ui_bt = NULL;
@@ -103,16 +101,6 @@ void ui_main_screen_init(void)
     lv_obj_add_flag(ui_Image1, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
     lv_obj_clear_flag(ui_Image1, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_stream = lv_tabview_add_tab(ui_TabView1, "Stream");
-
-    ui_Image2 = lv_img_create(ui_stream);
-    lv_img_set_src(ui_Image2, &ui_img_advertising_png);
-    lv_obj_set_width(ui_Image2, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_Image2, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_Image2, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_Image2, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
-    lv_obj_clear_flag(ui_Image2, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-
     ui_wifi = lv_tabview_add_tab(ui_TabView1, "WiFi");
 
     ui_Image4 = lv_img_create(ui_wifi);
@@ -150,8 +138,6 @@ void ui_main_screen_destroy(void)
     ui_TabView1 = NULL;
     ui_music = NULL;
     ui_Image1 = NULL;
-    ui_stream = NULL;
-    ui_Image2 = NULL;
     ui_wifi = NULL;
     ui_Image4 = NULL;
     ui_bt = NULL;

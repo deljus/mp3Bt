@@ -14,6 +14,9 @@ extern "C" {
 extern void ui_player_screen_init(void);
 extern void ui_player_screen_destroy(void);
 extern lv_obj_t * ui_player;
+extern lv_obj_t * ui_Panel8;
+extern lv_obj_t * ui_Bar3;
+extern lv_obj_t * ui_Label1;
 extern lv_obj_t * ui_Panel3;
 extern lv_obj_t * ui_chargeBar2;
 extern lv_obj_t * ui_btStatus2;
@@ -21,6 +24,14 @@ extern lv_obj_t * ui_wifiStatus2;
 extern lv_obj_t * ui_chargePercent2;
 extern lv_obj_t * ui_meow2;
 extern lv_obj_t * ui_Panel2;
+extern lv_obj_t * ui_Panel6;
+extern lv_obj_t * ui_prevSoungBtn;
+extern lv_obj_t * ui_Panel7;
+extern lv_obj_t * ui_nextSoungBtn;
+extern lv_obj_t * ui_Panel5;
+extern lv_obj_t * ui_playBtn;
+extern lv_obj_t * ui_volumeBar;
+extern lv_obj_t * ui_Image3;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

@@ -20,6 +20,8 @@ public:
     void backKeyPress() override;
 
     void addGotoPlayerListener(void (*cb)());
+    void addGotoWifiListener(void (*cb)());
 private:
     CallbackType gotoPlayerCallback;
+    CallbackType gotoWifiCallback;
 };
